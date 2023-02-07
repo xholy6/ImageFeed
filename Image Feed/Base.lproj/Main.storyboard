@@ -49,15 +49,12 @@
                                                     </attributedString>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gm3-dY-mLh" userLabel="Like Button">
-                                                    <rect key="frame" x="323" y="16" width="54" height="40"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gm3-dY-mLh" userLabel="Like Button">
+                                                    <rect key="frame" x="338" y="16" width="29" height="26"/>
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                     <state key="normal" image="ActiveLike">
                                                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </state>
-                                                    <buttonConfiguration key="configuration" style="plain" image="ActiveLike">
-                                                        <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    </buttonConfiguration>
                                                 </button>
                                             </subviews>
                                             <color key="backgroundColor" red="0.1019607843" green="0.1058823529" blue="0.1333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -67,9 +64,9 @@
                                                 <constraint firstItem="1cu-oi-ii8" firstAttribute="leading" secondItem="131-7u-WHe" secondAttribute="leading" constant="24" id="SsF-Wv-iKT"/>
                                                 <constraint firstAttribute="trailing" secondItem="3Cj-Gz-wJg" secondAttribute="trailing" constant="16" id="VrS-Nh-Gju"/>
                                                 <constraint firstItem="3Cj-Gz-wJg" firstAttribute="top" secondItem="131-7u-WHe" secondAttribute="top" constant="4" id="a1L-gp-1zx"/>
-                                                <constraint firstItem="Gm3-dY-mLh" firstAttribute="trailing" secondItem="3Cj-Gz-wJg" secondAttribute="trailing" id="eMR-M4-cVa"/>
                                                 <constraint firstItem="Gm3-dY-mLh" firstAttribute="top" secondItem="3Cj-Gz-wJg" secondAttribute="top" constant="12" id="ikG-1Z-902"/>
                                                 <constraint firstAttribute="bottom" secondItem="1cu-oi-ii8" secondAttribute="bottom" constant="8" id="sdt-IK-GJH"/>
+                                                <constraint firstItem="Gm3-dY-mLh" firstAttribute="trailing" secondItem="3Cj-Gz-wJg" secondAttribute="trailing" constant="-10" id="spA-JW-yLh"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
@@ -105,6 +102,6 @@
     </scenes>
     <resources>
         <image name="0" width="200" height="132"/>
-        <image name="ActiveLike" width="30" height="26"/>
+        <image name="ActiveLike" width="29" height="26"/>
     </resources>
 </document>
