@@ -1,6 +1,6 @@
 import UIKit
 
-class ImagesListViewController: UIViewController {
+final class ImagesListViewController: UIViewController {
     
     // MARK: - @IBOutlet
     @IBOutlet private var tableView: UITableView!

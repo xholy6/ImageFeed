@@ -1,7 +1,6 @@
 import UIKit
 
 final class ProfileScreenView: UIView {
-    
     //MARK: - UI objects
     private lazy var avatarImageView: UIImageView = {
         
@@ -36,7 +35,7 @@ final class ProfileScreenView: UIView {
         
         let label = UILabel()
         label.text = "@ekaterina_nov"
-        label.textColor = UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1)
+        label.textColor = .ypGray
         label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -55,7 +54,7 @@ final class ProfileScreenView: UIView {
     //MARK: - Initializers
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = UIColor(red: 26/255, green: 27/255, blue: 34/255, alpha: 1)
+        self.backgroundColor = .ypBlack
         self.translatesAutoresizingMaskIntoConstraints = false
         addSubviews()
         constraintsActivate()
@@ -67,11 +66,11 @@ final class ProfileScreenView: UIView {
     
     //MARK: - Private methods
     private func addSubviews() {
-        self.addSubview(avatarImageView)
-        self.addSubview(logoutButton)
-        self.addSubview(loginLabel)
-        self.addSubview(nameLabel)
-        self.addSubview(descriptionLabel)
+        addSubview(avatarImageView)
+        addSubview(logoutButton)
+        addSubview(loginLabel)
+        addSubview(nameLabel)
+        addSubview(descriptionLabel)
     }
     
     private func constraintsActivate() {

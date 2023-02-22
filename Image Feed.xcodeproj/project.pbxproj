@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		5810D75E29A4E19C00B44E79 /* ProfileScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5810D75D29A4E19C00B44E79 /* ProfileScreenView.swift */; };
 		5810D76029A4FDE400B44E79 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 584AEA4D2972A76800E424A7 /* Assets.xcassets */; };
+		5810D76529A67EAD00B44E79 /* UIColor+Extentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5810D76429A67EAD00B44E79 /* UIColor+Extentions.swift */; };
 		584AEA452972A76600E424A7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 584AEA442972A76600E424A7 /* AppDelegate.swift */; };
 		584AEA472972A76600E424A7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 584AEA462972A76600E424A7 /* SceneDelegate.swift */; };
 		584AEA492972A76600E424A7 /* ImagesListViewController .swift in Sources */ = {isa = PBXBuildFile; fileRef = 584AEA482972A76600E424A7 /* ImagesListViewController .swift */; };
@@ -21,6 +22,7 @@
 
 /* Begin PBXFileReference section */
 		5810D75D29A4E19C00B44E79 /* ProfileScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileScreenView.swift; sourceTree = "<group>"; };
+		5810D76429A67EAD00B44E79 /* UIColor+Extentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extentions.swift"; sourceTree = "<group>"; };
 		584AEA412972A76600E424A7 /* Image Feed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Image Feed.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		584AEA442972A76600E424A7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		584AEA462972A76600E424A7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -63,6 +65,14 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		5810D76329A67E9000B44E79 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				5810D76429A67EAD00B44E79 /* UIColor+Extentions.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		584AEA382972A76600E424A7 = {
 			isa = PBXGroup;
 			children = (
@@ -84,6 +94,7 @@
 			children = (
 				5810D75C29A4DF1800B44E79 /* Application */,
 				587BBA48299C3B7F00E2E662 /* Profile */,
+				5810D76329A67E9000B44E79 /* Helpers */,
 				587BBA4B299EA72000E2E662 /* SingleImage */,
 				58F1CF0B297415AC000C6F67 /* ImagesList */,
 				5810D75F29A4FDC700B44E79 /* Resources */,
@@ -194,6 +205,7 @@
 				58F1CF0A29741583000C6F67 /* ImagesListCell.swift in Sources */,
 				587BBA47299297D900E2E662 /* ProfileViewController.swift in Sources */,
 				584AEA452972A76600E424A7 /* AppDelegate.swift in Sources */,
+				5810D76529A67EAD00B44E79 /* UIColor+Extentions.swift in Sources */,
 				5810D75E29A4E19C00B44E79 /* ProfileScreenView.swift in Sources */,
 				587BBA4A299EA71B00E2E662 /* SingleImageViewController.swift in Sources */,
 				584AEA472972A76600E424A7 /* SceneDelegate.swift in Sources */,
