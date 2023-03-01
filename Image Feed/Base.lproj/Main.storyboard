@@ -255,6 +255,9 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="8w1-na-Jcq"/>
+                    <connections>
+                        <outlet property="singInButton" destination="LCB-Bd-l2F" id="phU-jP-BK8"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gIC-1T-kCO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

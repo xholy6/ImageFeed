@@ -9,12 +9,16 @@ final class AuthViewController: UIViewController {
     //MARK: - Public properties
     weak var delegate: AuthViewControllerDelegate?
     
+    //MARK: - @IBOutlet
+    @IBOutlet private var singInButton: UIButton!
+    
     //MARK: - Private properties
     private let segueIdentifier = "ShowWebView"
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        singInButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .bold)
     }
     
     //MARK: - Override methods
