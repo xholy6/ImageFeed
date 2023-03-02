@@ -10,8 +10,8 @@ protocol WebViewViewControllerDelegate: AnyObject {
 final class WebViewViewController: UIViewController {
     
     //MARK: - IBOutlet
-    @IBOutlet weak var webView: WKWebView!
-    @IBOutlet weak var progressView: UIProgressView!
+    @IBOutlet private weak var webView: WKWebView!
+    @IBOutlet private weak var progressView: UIProgressView!
         
     //MARK: - Public properties
     weak var delegate: WebViewViewControllerDelegate?
@@ -30,7 +30,7 @@ final class WebViewViewController: UIViewController {
         webView.navigationDelegate = self
         
         guard let request = createRequest() else {
-            fatalError("Ошибка запроса для авторизации")
+           return assertionFailure("Ошибка запроса для авторизации")
         }
         
         webView.load(request)
@@ -51,7 +51,7 @@ final class WebViewViewController: UIViewController {
     }
     
     //MARK: - IBAction
-    @IBAction func didTabBackButton(_ sender: UIButton) {
+    @IBAction private func didTapBackButton(_ sender: UIButton) {
         delegate?.webViewViewControllerDidCancel(self)
     }
     

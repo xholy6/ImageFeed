@@ -6,24 +6,22 @@ final class OAuth2Service {
     //MARK: - Private properties
     private let urlSession = URLSession.shared
     
-    private (set) var authToken: String? {
-        get { OAuth2TokenStorage().token }
-        set { OAuth2TokenStorage().token = newValue }
-    }
     
     //MARK: - Public methods
     func fetchOAuthToken(_ code: String, completion: @escaping (Result<String, Error>) -> Void ) {
         let request = authTokenRequest(code: code)
         
         let task = object(for: request) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let body):
-                let authToken = body.accessToken
-                self.authToken = authToken
-                completion(.success(authToken))
-            case .failure(let error):
-                completion(.failure(error))
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                switch result {
+                case .success(let body):
+                    let authToken = body.accessToken
+                    OAuth2TokenStorage.shared.token = authToken
+                    completion(.success(authToken))
+                case .failure(let error):
+                    completion(.failure(error))
+                }
             }
         }
         task.resume()

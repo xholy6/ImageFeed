@@ -234,7 +234,7 @@
                                     <color key="baseForegroundColor" red="0.10280110689999999" green="0.10674334319999999" blue="0.13517221809999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </buttonConfiguration>
                                 <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.maskToBounds" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.clipsToBounds" value="YES"/>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                         <integer key="value" value="16"/>
                                     </userDefinedRuntimeAttribute>
@@ -272,7 +272,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YK5-0V-aUd">
-                                <rect key="frame" x="0.0" y="129" width="385" height="689"/>
+                                <rect key="frame" x="0.0" y="129" width="393" height="689"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <wkWebViewConfiguration key="configuration">
                                     <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
@@ -280,9 +280,8 @@
                                 </wkWebViewConfiguration>
                             </wkWebView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dg9-8e-Ke8">
-                                <rect key="frame" x="16" y="59" width="9" height="64"/>
+                                <rect key="frame" x="16" y="59" width="17" height="64"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="64" id="NFR-0u-crk"/>
                                     <constraint firstAttribute="height" constant="64" id="RgH-hc-T5I"/>
                                 </constraints>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
@@ -292,7 +291,7 @@
                                 </connections>
                             </button>
                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="iDC-OT-Y7H">
-                                <rect key="frame" x="0.0" y="119" width="385" height="4"/>
+                                <rect key="frame" x="0.0" y="119" width="393" height="4"/>
                                 <color key="progressTintColor" name="ypBlack"/>
                                 <color key="trackTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </progressView>
