@@ -79,8 +79,8 @@
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
-                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="Y7g-n0-hA0"/>
-                                    <outlet property="delegate" destination="BYZ-38-t0r" id="x6w-3i-NxM"/>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="IaN-TE-m1W"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="r0h-0J-PMK"/>
                                 </connections>
                             </tableView>
                         </subviews>
@@ -96,7 +96,7 @@
                     <tabBarItem key="tabBarItem" title="" image="tab_editorial_active" id="THV-uq-UQA"/>
                     <navigationItem key="navigationItem" id="tAh-6o-yel"/>
                     <connections>
-                        <outlet property="tableView" destination="x1n-sp-smL" id="Y1K-ng-9E2"/>
+                        <outlet property="tableView" destination="x1n-sp-smL" id="pDA-1a-gHh"/>
                         <segue destination="bWM-Xr-mu1" kind="presentation" identifier="ShowSingleImage" id="aSG-ez-hUU"/>
                     </connections>
                 </viewController>
