@@ -9,7 +9,7 @@ final class SingleImageViewController: UIViewController {
     
     
     //MARK: - Properties
-    var image: UIImage! {
+    var image: UIImage? {
         didSet {
             guard isViewLoaded else { return }
             imageView.image = image
@@ -19,6 +19,7 @@ final class SingleImageViewController: UIViewController {
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        guard let image = image else { return }
         imageView.image = image
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 1.25

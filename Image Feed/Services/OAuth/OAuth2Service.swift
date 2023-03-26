@@ -6,39 +6,41 @@ final class OAuth2Service {
     //MARK: - Private properties
     private let urlSession = URLSession.shared
     
+    private var task: URLSessionTask?
+    
+    private var lastCode: String?
     
     //MARK: - Public methods
     func fetchOAuthToken(_ code: String, completion: @escaping (Result<String, Error>) -> Void ) {
+        assert(Thread.isMainThread)
+        
+        if lastCode == code { return }
+        task?.cancel()
+        lastCode = code
+        
         let request = authTokenRequest(code: code)
         
-        let task = object(for: request) { result in
+        let task = urlSession.objectTask(for: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
+            guard let self = self else { return }
             DispatchQueue.main.async {
                 switch result {
                 case .success(let body):
                     let authToken = body.accessToken
                     OAuth2TokenStorage.shared.token = authToken
                     completion(.success(authToken))
+                    self.task = nil
                 case .failure(let error):
+                    self.lastCode = nil
                     completion(.failure(error))
                 }
             }
         }
+        self.task = task
         task.resume()
     }
 }
 
 extension OAuth2Service {
-    //MARK: - Private methods
-    private func object( for request: URLRequest,completion: @escaping (Result<OAuthTokenResponseBody, Error>) -> Void) -> URLSessionTask {
-        let decoder = JSONDecoder()
-        return urlSession.data(for: request) { (result: Result<Data, Error>) in
-            let response = result.flatMap { data -> Result<OAuthTokenResponseBody, Error> in
-                Result { try decoder.decode(OAuthTokenResponseBody.self, from: data) }
-            }
-            completion(response)
-        }
-    }
-    
     private func authTokenRequest(code: String) -> URLRequest {
         URLRequest.makeHTTPRequest(
             path: "/oauth/token"
@@ -50,5 +52,6 @@ extension OAuth2Service {
             httpMethod: "POST")
     }
 }
+
 
 

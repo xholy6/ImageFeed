@@ -1,6 +1,8 @@
 import UIKit
+import Kingfisher
 
 final class ProfileScreenView: UIView {
+    
     //MARK: - UI objects
     private lazy var avatarImageView: UIImageView = {
         
@@ -63,7 +65,27 @@ final class ProfileScreenView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    // MARK: - Public methods
+    func updateProfile(from profile: Profile?) {
+        guard let profile else { return }
+        nameLabel.text = profile.name
+        loginLabel.text = profile.loginName
+        descriptionLabel.text = profile.bio
+    }
     
+    func updateAvatar(_ url: URL) {
+        avatarImageView.kf.setImage(with: url, placeholder: UIImage(named: "placeholder"), options: nil) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let value):
+                self.avatarImageView.image = value.image
+                self.avatarImageView.layer.cornerRadius = self.avatarImageView.frame.width / 2
+            case .failure(_):
+                assertionFailure("something went wrong")
+            }
+        }
+    }
     //MARK: - Private methods
     private func addSubviews() {
         addSubview(avatarImageView)
