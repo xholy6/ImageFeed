@@ -9,7 +9,13 @@ final class ImageListService {
     
     static let didChangeNotification = Notification.Name(rawValue: "ImageListServiceDidChange")
     
-    static var lastLoadedPage: Int?
+    private enum HTTPMethods: String {
+        case get = "GET"
+        case post = "POST"
+        case delete = "DELETE"
+    }
+    
+    private var lastLoadedPage: Int?
     private var task: URLSessionTask?
     private let urlSession = URLSession.shared
     
@@ -19,12 +25,12 @@ final class ImageListService {
         
         var nextPage: Int
         
-        if let lastLoadedPage = ImageListService.lastLoadedPage {
+        if let lastLoadedPage = lastLoadedPage {
             nextPage = lastLoadedPage + 1
-            ImageListService.lastLoadedPage = nextPage
+            self.lastLoadedPage = nextPage
         } else {
             nextPage = 1
-            ImageListService.lastLoadedPage = nextPage
+            self.lastLoadedPage = nextPage
         }
         
         guard let token = OAuth2TokenStorage.shared.token else { return }
@@ -60,7 +66,7 @@ final class ImageListService {
     private func ImageListRequest(numberPage: Int, token: String) -> URLRequest {
         var request = URLRequest.makeHTTPRequest(
             path: "/photos" + "?page=\(numberPage)",
-            httpMethod: "GET",
+            httpMethod: HTTPMethods.get.rawValue,
             baseURL: Constants.apiBaseURL)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
@@ -79,4 +85,57 @@ final class ImageListService {
         return photo
     }
     
+    func changeLike(idPhoto: String,
+                    isLike: Bool,
+                    _ completion: @escaping (Result<Void, Error>)-> Void ) {
+        assert(Thread.isMainThread)
+        task?.cancel()
+        guard let token = OAuth2TokenStorage.shared.token else { return }
+        
+        let httpMethod = isLike ? HTTPMethods.post.rawValue : HTTPMethods.delete.rawValue
+        let request = likeRequest(id: idPhoto, HTTPMethod: httpMethod, token: token)
+        
+        let task = urlSession.dataTask(with: request) { [weak self] _, response, error in
+            if let error = error {
+                print(error)
+                completion(.failure(error))
+                return
+            }
+            guard
+                let response = response,
+                let statusCode = (response as? HTTPURLResponse)?.statusCode,
+                statusCode == 201 || statusCode == 200,
+                let self = self else { return }
+            
+            self.changePhoto(photoId: idPhoto)
+            completion(.success(Void()))
+        }
+        
+        self.task = task
+        task.resume()
+    }
+    
+    private func likeRequest(id: String, HTTPMethod: String, token: String) -> URLRequest {
+        var request = URLRequest.makeHTTPRequest(
+            path: "/photos" + "/\(id)/like",
+            httpMethod: HTTPMethod,
+            baseURL: Constants.apiBaseURL)
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        return request
+    }
+    
+    private func changePhoto(photoId: String) {
+        if let index = self.photos.firstIndex(where: { $0.id == photoId}) {
+            let photo = self.photos[index]
+            let newPhoto = Photo(id: photo.id,
+                                 size: photo.size,
+                                 createdAt: photo.createdAt,
+                                 welcomeDescription: photo.welcomeDescription,
+                                 thumbImageURL: photo.thumbImageURL,
+                                 largeImageURL: photo.largeImageURL,
+                                 isLiked: !photo.isLiked)
+            
+            self.photos[index] = newPhoto
+        }
+    }
 }

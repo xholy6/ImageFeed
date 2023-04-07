@@ -1,16 +1,44 @@
 import UIKit
 
 final class TabBarController: UITabBarController {
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        let storyboard = UIStoryboard(name: "Main", bundle: .main)
-        let imagesListViewController = storyboard.instantiateViewController(withIdentifier: "ImagesListViewController")
-            let profileViewController = ProfileViewController()
-            profileViewController.tabBarItem = UITabBarItem(
-            title: nil,
-            image: UIImage(named: "tab_profile_active"),
-            selectedImage: nil
-        )
-        self.viewControllers = [imagesListViewController, profileViewController]
+
+    private enum TabBarItem {
+        case list
+        case profile
+        
+        var image: UIImage? {
+            switch self {
+            case .list:
+                return UIImage(named: "tab_editorial_active")
+            case .profile:
+                return UIImage(named: "tab_profile_active")
+            }
+        }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupTabBar()
+    }
+    
+    func setupTabBar() {
+        tabBar.backgroundColor = .ypBlack
+        tabBar.barTintColor = .clear
+        tabBar.tintColor = .white
+        
+        let items: [TabBarItem] = [.list, .profile]
+        
+        viewControllers = items.compactMap({ item in
+            switch item {
+            case .list:
+                return ImagesListViewController()
+            case .profile:
+                return ProfileViewController()
+            }
+        })
+        
+        viewControllers?.enumerated().forEach({ (index, vc) in
+            vc.tabBarItem.image = items[index].image
+        })
     }
 }

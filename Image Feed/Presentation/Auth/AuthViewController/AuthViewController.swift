@@ -4,6 +4,10 @@ protocol AuthViewControllerDelegate: AnyObject {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String)
 }
 
+protocol AuthViewControllerProtocol: AnyObject {
+    func showWebviewController()
+}
+
 final class AuthViewController: UIViewController {
     
     //MARK: - Public properties
@@ -14,23 +18,13 @@ final class AuthViewController: UIViewController {
     
     //MARK: - Private properties
     private let segueIdentifier = "ShowWebView"
+    private var authScreenView: AuthViewControllerScreen!
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        singInButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .bold)
-    }
-    
-    //MARK: - Override methods
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == segueIdentifier {
-            guard let viewController = segue.destination as? WebViewViewController else {
-                fatalError("Ошибка сигвея \(segueIdentifier)")
-            }
-            viewController.delegate = self
-        } else {
-            super.prepare(for: segue, sender: sender)
-        }
+        authScreenView = AuthViewControllerScreen(viewController: self)
+        setScreenViewOnViewController(view: authScreenView)
     }
 }
 
@@ -43,5 +37,14 @@ extension AuthViewController: WebViewViewControllerDelegate {
     
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
         dismiss(animated: true)
+    }
+}
+
+extension AuthViewController: AuthViewControllerProtocol {
+    func showWebviewController() {
+        let webviewController = WebViewViewController()
+        webviewController.delegate = self
+        webviewController.modalPresentationStyle = .fullScreen
+        present(webviewController, animated: true)
     }
 }

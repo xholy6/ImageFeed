@@ -1,65 +1,75 @@
 import UIKit
+import Kingfisher
+
+protocol SingleImageViewControllerProtocol: AnyObject {
+    func dismissViewController()
+    func sharingImage(_ image: UIImage?)
+    func showAlertLoadImageError()
+}
 
 final class SingleImageViewController: UIViewController {
     
-    //MARK: - @IBOutlets
+    // MARK: - Private properties
+    private var sharingPresenter: SharingPresenterProtocol!
+    private var singleImageScreen: SingleImageViewControllerScreen!
+    private var alertPresenter: LoadImageErrorAlertProtocol?
     
-    @IBOutlet private var imageView: UIImageView!
-    @IBOutlet private var scrollView: UIScrollView!
-    
-    
-    //MARK: - Properties
-    var image: UIImage? {
-        didSet {
-            guard isViewLoaded else { return }
-            imageView.image = image
-        }
-    }
+    //MARK: - Public properties
+    var imageURL: String?
     
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        guard let image = image else { return }
-        imageView.image = image
-        scrollView.minimumZoomScale = 0.1
-        scrollView.maximumZoomScale = 1.25
-        rescaleAndCenterImageInScrollView(image: image)
+        singleImageScreen = SingleImageViewControllerScreen(viewController: self)
+        sharingPresenter = SharingPresenter(delegate: self)
+        alertPresenter = LoadImageErrorAlertPresenter(delegate: self)
+        setScreenViewOnViewController(view: singleImageScreen)
+        singleImageScreen.fetchImage(imageURL)
+    }
+    // MARK: - Private func
+    private func showImageErrorAlert() {
+        let alertModel = AlertModel(
+            title: "Что-то пошло не так(",
+            message: "Попробовать еще раз?",
+            buttonText: "Повторить", completion: { [weak self]_ in
+                guard let self = self else { return }
+                self.singleImageScreen.fetchImage(self.imageURL)
+            })
+        
+        alertPresenter?.requestShowErrorLoadImageAlert(alertModel: alertModel)
     }
     
-    //MARK: - @IBActions
-    @IBAction func didTapBackButton() {
-        dismiss(animated: true, completion: nil)
-    }
-    
-    @IBAction func didTapSharingButton() {
-        let shareController = UIActivityViewController(
-            activityItems: [image],
-            applicationActivities: nil
-        )
-        present(shareController, animated: true, completion: nil)
-    }
-    //MARK: - Private methods
-    private func rescaleAndCenterImageInScrollView(image: UIImage) {
-        let minZoomScale = scrollView.minimumZoomScale
-        let maxZoomScale = scrollView.maximumZoomScale
-        view.layoutIfNeeded()
-        let visibleRectSize = scrollView.bounds.size
-        let imageSize = image.size
-        let hScale = visibleRectSize.width / imageSize.width
-        let vScale = visibleRectSize.height / imageSize.height
-        let scale = min(maxZoomScale, max(minZoomScale, max(hScale, vScale)))
-        scrollView.setZoomScale(scale, animated: false)
-        scrollView.layoutIfNeeded()
-        let newContentSize = scrollView.contentSize
-        let x = (newContentSize.width - visibleRectSize.width) / 2
-        let y = (newContentSize.height - visibleRectSize.height) / 2
-        scrollView.setContentOffset(CGPoint(x: x, y: y), animated: false)
+    deinit {
+        print("deinit")
     }
 }
-//MARK: - UIScrollViewDelegate
-extension SingleImageViewController: UIScrollViewDelegate {
-    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        imageView
+// MARK: - SharingPresenterDelegate
+extension SingleImageViewController: SharingPresenterDelegate {
+    func shareImage(viewController: UIActivityViewController?) {
+        guard let viewController else { return }
+        present(viewController, animated: true)
     }
 }
 
+// MARK: - SingleImageViewControllerProtocol
+extension SingleImageViewController: SingleImageViewControllerProtocol {
+    func showAlertLoadImageError() {
+        showImageErrorAlert()
+    }
+    
+    func dismissViewController() {
+        dismiss(animated: true)
+    }
+    
+    func sharingImage(_ image: UIImage?) {
+        sharingPresenter.requestSharingImage(for: image)
+    }
+}
+
+// MARK: - ErrorAlertPresenterDelegate
+extension SingleImageViewController: ErrorAlertPresenterDelegate {
+    func showAlert(alertController: UIAlertController?) {
+        guard let alertController = alertController else { return }
+        present(alertController, animated: true)
+    }
+}

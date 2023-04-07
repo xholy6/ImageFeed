@@ -57,6 +57,9 @@
                                                     <state key="normal" image="ActiveLike">
                                                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </state>
+                                                    <connections>
+                                                        <action selector="likeButtonTapped" destination="ZdM-8l-1Ii" eventType="touchUpInside" id="8uL-bl-m32"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <color key="backgroundColor" red="0.1019607843" green="0.1058823529" blue="0.1333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -72,8 +75,8 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="cellImageView" destination="3Cj-Gz-wJg" id="fla-RK-BFM"/>
                                             <outlet property="dateLabel" destination="1cu-oi-ii8" id="w09-li-k5q"/>
-                                            <outlet property="imageCell" destination="3Cj-Gz-wJg" id="fla-RK-BFM"/>
                                             <outlet property="likeButton" destination="Gm3-dY-mLh" id="O4s-Ae-yBD"/>
                                         </connections>
                                     </tableViewCell>

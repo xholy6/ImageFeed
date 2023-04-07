@@ -3,6 +3,8 @@ import Kingfisher
 
 final class ProfileScreenView: UIView {
     
+    weak var viewController: ProfileViewControllerProtocol?
+    
     //MARK: - UI objects
     private lazy var avatarImageView: UIImageView = {
         
@@ -66,6 +68,10 @@ final class ProfileScreenView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    convenience init(viewController: ProfileViewControllerProtocol) {
+        self.init()
+        self.viewController = viewController
+    }
     // MARK: - Public methods
     func updateProfile(from profile: Profile?) {
         guard let profile else { return }
@@ -82,7 +88,7 @@ final class ProfileScreenView: UIView {
                 self.avatarImageView.image = value.image
                 self.avatarImageView.layer.cornerRadius = self.avatarImageView.frame.width / 2
             case .failure(_):
-                assertionFailure("something went wrong")
+                self.viewController?.showAlertGetAvatarError()
             }
         }
     }
@@ -117,7 +123,7 @@ final class ProfileScreenView: UIView {
     }
     
     @objc private func didExitButtonTapped() {
-        
+        viewController?.logoutProfile()
     }
     
 }
