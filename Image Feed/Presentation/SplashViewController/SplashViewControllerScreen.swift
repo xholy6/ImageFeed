@@ -5,7 +5,7 @@ class SplashViewControllerScreen: UIView {
     
     private lazy var logoImageView: UIImageView = {
         let imageView = UIImageView()
-        let image = UIImage(named: "Vector")
+        let image = UIImage(named: "LaunchIcon")
         imageView.image = image
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.backgroundColor = .clear
