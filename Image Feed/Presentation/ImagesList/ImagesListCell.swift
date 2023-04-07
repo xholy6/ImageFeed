@@ -55,8 +55,8 @@ final class ImagesListCell: UITableViewCell {
         NSLayoutConstraint.activate([
             cellImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             cellImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            cellImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: -4),
-            cellImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 4),
+            cellImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 4),
+            cellImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -4),
             
             dateLabel.leftAnchor.constraint(equalTo: cellImageView.leftAnchor, constant: 8),
             dateLabel.bottomAnchor.constraint(equalTo: cellImageView.bottomAnchor, constant: -4),
