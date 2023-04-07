@@ -67,7 +67,7 @@ final class ProfileScreenView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     convenience init(viewController: ProfileViewControllerProtocol) {
         self.init()
         self.viewController = viewController

@@ -94,8 +94,8 @@ final class ImagesListCell: UITableViewCell {
         guard let url = URL(string: url) else { return }
         cellImageView.kf.indicatorType = .activity
         cellImageView.kf.setImage(with: url,
-                              placeholder: UIImage(named: "Stub"),
-                              options: nil) { [weak self] result in
+                                  placeholder: UIImage(named: "Stub"),
+                                  options: nil) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let value):
@@ -107,7 +107,7 @@ final class ImagesListCell: UITableViewCell {
         }
     }
     
-   @objc private func likeButtonTapped() {
+    @objc private func likeButtonTapped() {
         delegate?.imagesListCellDidTapLike(self)
     }
 }

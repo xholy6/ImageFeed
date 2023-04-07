@@ -7,7 +7,7 @@ class SingleImageViewControllerScreen: UIView {
     weak var viewController: SingleImageViewControllerProtocol?
     
     private var needShowErrorAlert = true
-
+    
     //MARK: - UI Objects
     
     private lazy var scrollView: UIScrollView = {
@@ -66,7 +66,7 @@ class SingleImageViewControllerScreen: UIView {
             self.viewController?.showAlertLoadImageError()
             return
         }
-
+        
         ProgressHUD.show()
         imageView.kf.setImage(with: url, options: nil) { [weak self] result in
             guard let self = self else { return }
@@ -104,7 +104,7 @@ class SingleImageViewControllerScreen: UIView {
             scrollView.widthAnchor.constraint(equalTo: widthAnchor),
             scrollView.topAnchor.constraint(equalTo: topAnchor),
             scrollView.bottomAnchor.constraint(equalTo: bottomAnchor),
-           
+            
             imageView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             imageView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             imageView.topAnchor.constraint(equalTo: scrollView.topAnchor),
@@ -138,7 +138,7 @@ class SingleImageViewControllerScreen: UIView {
         let y = (newContentSize.height - visibleRectSize.height) / 2
         scrollView.setContentOffset(CGPoint(x: x, y: y), animated: false)
     }
-        
+    
     @objc private func didBackButtonTapped() {
         needShowErrorAlert = false
         imageView.kf.cancelDownloadTask()

@@ -117,7 +117,7 @@ extension ImagesListViewController: UITableViewDelegate {
 extension ImagesListViewController: ImagesListCellDelegate {
     func reloadCellHeight(numberRow: Int) {
         let indexPath = IndexPath(item: numberRow, section: 0)
-
+        
         tableView.performBatchUpdates {
             tableView.reloadRows(at: [indexPath], with: .automatic )
         }

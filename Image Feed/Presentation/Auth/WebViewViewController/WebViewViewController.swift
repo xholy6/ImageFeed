@@ -17,7 +17,7 @@ final class WebViewViewController: UIViewController {
     //MARK: - IBOutlet
     @IBOutlet private weak var webView: WKWebView!
     @IBOutlet private weak var progressView: UIProgressView!
-        
+    
     //MARK: - Public properties
     weak var delegate: WebViewViewControllerDelegate?
     
@@ -37,12 +37,12 @@ final class WebViewViewController: UIViewController {
         setScreenViewOnViewController(view: webviewScreen)
         
         guard let request = createRequest() else {
-           return assertionFailure("Ошибка запроса для авторизации")
+            return assertionFailure("Ошибка запроса для авторизации")
         }
         
         webviewScreen.loadWebview(request: request)
     }
-
+    
     //MARK: - Private methods
     private func createRequest() -> URLRequest? {
         var urlComponents = URLComponents(string: WebViewConstants.unsplashAuthorizeURLString)!
@@ -66,7 +66,7 @@ final class WebViewViewController: UIViewController {
 
 //MARK: - WKNavigationDelegate
 extension WebViewViewController: WKNavigationDelegate {
- 
+    
 }
 
 extension WebViewViewController: WebViewViewControllerProtocol {

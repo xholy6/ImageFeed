@@ -1,6 +1,5 @@
 import UIKit
 
-
 protocol SharingPresenterProtocol: AnyObject {
     func requestSharingImage(for image: UIImage?)
 }
@@ -9,9 +8,8 @@ protocol SharingPresenterDelegate: AnyObject {
     func shareImage(viewController: UIActivityViewController?)
 }
 
-
 final class SharingPresenter {
-        
+    
     //MARK: - Private properties
     private weak var delegate: SharingPresenterDelegate?
     
