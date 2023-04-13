@@ -52,7 +52,7 @@ final class ImageListService {
                         userInfo: ["photos" : self.photos])
                     self.task = nil
                 case .failure(let error):
-                    print(error)
+                    assertionFailure("\(error)")
                 }
                 self.task = nil
             }
@@ -91,6 +91,7 @@ final class ImageListService {
                     isLike: Bool,
                     _ completion: @escaping (Result<Void, Error>)-> Void ) {
         assert(Thread.isMainThread)
+        task?.cancel()
         guard let token = OAuth2TokenStorage.shared.token else { return }
         
         let httpMethod = isLike ? HTTPMethods.post.rawValue : HTTPMethods.delete.rawValue
@@ -110,6 +111,7 @@ final class ImageListService {
             
             self.changePhoto(photoId: idPhoto)
             completion(.success(Void()))
+            self.task = nil
         }
         
         self.task = task
