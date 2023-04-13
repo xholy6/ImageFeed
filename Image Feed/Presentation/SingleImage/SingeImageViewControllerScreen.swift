@@ -2,7 +2,7 @@ import UIKit
 import ProgressHUD
 import Kingfisher
 
-class SingleImageViewControllerScreen: UIView {
+final class SingleImageViewControllerScreen: UIView {
     
     weak var viewController: SingleImageViewControllerProtocol?
     

@@ -105,7 +105,7 @@ final class ProfileScreenView: UIView {
             
             avatarImageView.heightAnchor.constraint(equalToConstant: 70),
             avatarImageView.widthAnchor.constraint(equalToConstant: 70),
-            avatarImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 52),
+            avatarImageView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 32),
             avatarImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
      
             
@@ -119,7 +119,7 @@ final class ProfileScreenView: UIView {
             descriptionLabel.leadingAnchor.constraint(equalTo: avatarImageView.leadingAnchor),
             
             logoutButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -18),
-            logoutButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 76),
+            logoutButton.centerYAnchor.constraint(equalTo: avatarImageView.centerYAnchor),
             logoutButton.heightAnchor.constraint(equalToConstant: 44),
             logoutButton.widthAnchor.constraint(equalToConstant: 44)
             

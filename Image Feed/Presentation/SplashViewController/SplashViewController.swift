@@ -110,7 +110,7 @@ extension SplashViewController: AuthViewControllerDelegate {
     }
     
     private func fetchProfileImageURL(username: String) {
-        profileImageService.fetchProfile(username) { result in
+        profileImageService.fetchProfile(username) { [weak self] result in
             switch result {
             case .success(let profileImageURL):
                 NotificationCenter.default
@@ -118,7 +118,7 @@ extension SplashViewController: AuthViewControllerDelegate {
                           object: self,
                           userInfo: ["URL" : profileImageURL])
             case .failure(_):
-                self.showAlert()
+                self?.showAlert()
             }
         }
     }

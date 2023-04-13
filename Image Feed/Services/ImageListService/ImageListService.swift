@@ -21,6 +21,7 @@ final class ImageListService {
     
     func fetchPhotosNextPage () {
         assert(Thread.isMainThread)
+        guard task == nil else { return }
         task?.cancel()
         
         var nextPage: Int
@@ -52,8 +53,8 @@ final class ImageListService {
                     self.task = nil
                 case .failure(let error):
                     print(error)
-                    self.task = nil
                 }
+                self.task = nil
             }
         }
         
@@ -74,7 +75,8 @@ final class ImageListService {
     
     private func getPhoto(from result: PhotoResult) -> Photo {
         let imageSize = CGSize(width: CGFloat(result.width), height: CGFloat(result.height))
-        let createdDate = DateFormatter().date(from: result.createdAt)
+        let formatter  = ISO8601DateFormatter()
+        let createdDate = formatter.date(from: result.createdAt)
         let photo = Photo(id: result.id,
                           size: imageSize,
                           createdAt: createdDate,
@@ -89,7 +91,6 @@ final class ImageListService {
                     isLike: Bool,
                     _ completion: @escaping (Result<Void, Error>)-> Void ) {
         assert(Thread.isMainThread)
-        task?.cancel()
         guard let token = OAuth2TokenStorage.shared.token else { return }
         
         let httpMethod = isLike ? HTTPMethods.post.rawValue : HTTPMethods.delete.rawValue
@@ -126,16 +127,9 @@ final class ImageListService {
     
     private func changePhoto(photoId: String) {
         if let index = self.photos.firstIndex(where: { $0.id == photoId}) {
-            let photo = self.photos[index]
-            let newPhoto = Photo(id: photo.id,
-                                 size: photo.size,
-                                 createdAt: photo.createdAt,
-                                 welcomeDescription: photo.welcomeDescription,
-                                 thumbImageURL: photo.thumbImageURL,
-                                 largeImageURL: photo.largeImageURL,
-                                 isLiked: !photo.isLiked)
-            
-            self.photos[index] = newPhoto
+            var photo = self.photos[index]
+            photo.isLiked.toggle()
+            self.photos[index] = photo
         }
     }
 }

@@ -21,12 +21,6 @@ final class WebViewViewController: UIViewController {
     //MARK: - Public properties
     weak var delegate: WebViewViewControllerDelegate?
     
-    //MARK: - Constants
-    private struct WebViewConstants {
-        static let unsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
-        static let responseType = "code"
-        static let urlComponentsPath = "/oauth/authorize/native"
-    }
     //MARK: - Private properties
     private var webviewScreen: WebViewControllerScreen!
     
@@ -45,12 +39,12 @@ final class WebViewViewController: UIViewController {
     
     //MARK: - Private methods
     private func createRequest() -> URLRequest? {
-        var urlComponents = URLComponents(string: WebViewConstants.unsplashAuthorizeURLString)!
+        var urlComponents = URLComponents(string: Constants.unsplashAuthorizeURLString)!
         
         urlComponents.queryItems = [
             URLQueryItem(name: "client_id", value: Constants.accessKey),
             URLQueryItem(name: "redirect_uri", value: Constants.redirectURI),
-            URLQueryItem(name: "response_type", value: WebViewConstants.responseType),
+            URLQueryItem(name: "response_type", value: Constants.responseType),
             URLQueryItem(name: "scope", value: Constants.accessScope)
         ]
         

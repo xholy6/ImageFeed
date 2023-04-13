@@ -13,7 +13,7 @@ final class ImagesListViewController: UIViewController {
     
     // MARK: - Private properties
     private var photos: [Photo] = []
-    private let ShowSingleImageSegueIdentifier = "ShowSingleImage"
+    private let showSingleImageSegueIdentifier = "ShowSingleImage"
     private let imageListService = ImageListService.shared
     private var imageListServiceObserver: NSObjectProtocol?
     
