@@ -1,6 +1,6 @@
 import UIKit
 
-class SplashViewControllerScreen: UIView {
+final class SplashViewControllerScreen: UIView {
     //MARK: - UI object
     
     private lazy var logoImageView: UIImageView = {
