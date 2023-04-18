@@ -8,7 +8,7 @@ final class SplashViewController: UIViewController {
     private let profileService = ProfileService.shared
     private let profileImageService = ProfileImageService.shared
     
-    private var alertPresenter: ErrorAlertPresenterProtocol?
+    private var alertPresenter: ErrorAuthAlertPresenter?
     
     private let authenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
     private let tabBarIdentifier = "TabBarViewController"
@@ -17,7 +17,7 @@ final class SplashViewController: UIViewController {
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        alertPresenter = ErrorAlertPresenter(delegate: self)
+        alertPresenter = ErrorAuthAlertPresenter(delegate: self)
         setupView()
     }
     
@@ -29,17 +29,7 @@ final class SplashViewController: UIViewController {
     //MARK: - Override method
     private func setupView() {
         view.backgroundColor = .ypBlack
-        addView()
-    }
-    
-    private func addView() {
-        view.addSubview(splashScreenView)
-        NSLayoutConstraint.activate([
-            splashScreenView.topAnchor.constraint(equalTo: view.topAnchor),
-            splashScreenView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            splashScreenView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            splashScreenView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
+        setScreenViewOnViewController(view: splashScreenView)
     }
     
     //MARK: - Private methods
@@ -70,6 +60,7 @@ final class SplashViewController: UIViewController {
     
     private func checkToken() {
         if let token = OAuth2TokenStorage.shared.token {
+            UIBlockingProgressHUD.show()
             fetchProfile(token: token)
         } else {
             presentAuthViewController()
@@ -94,7 +85,7 @@ extension SplashViewController: AuthViewControllerDelegate {
             case .failure:
                 UIBlockingProgressHUD.dismiss()
                 self.presentAuthViewController()
-                self.alertPresenter?.showAlert()
+                self.showAlert()
                 
             }
         }
@@ -112,14 +103,14 @@ extension SplashViewController: AuthViewControllerDelegate {
             case .failure(let error):
                 UIBlockingProgressHUD.dismiss()
                 print(error)
-                self.alertPresenter?.showAlert()
+                self.showAlert()
                 self.presentAuthViewController()
             }
         }
     }
     
     private func fetchProfileImageURL(username: String) {
-        profileImageService.fetchProfile(username) { result in
+        profileImageService.fetchProfile(username) { [weak self] result in
             switch result {
             case .success(let profileImageURL):
                 NotificationCenter.default
@@ -127,14 +118,25 @@ extension SplashViewController: AuthViewControllerDelegate {
                           object: self,
                           userInfo: ["URL" : profileImageURL])
             case .failure(_):
-                self.alertPresenter?.showAlert()
+                self?.showAlert()
             }
         }
     }
+    private func showAlert() {
+        let alertModel = AlertModel(
+            title: "Что-то пошло не так(",
+            message: "Не удалось войти в систему",
+            buttonText: "Ok", completion: { [weak self] _ in
+                guard let self = self else { return }
+                self.checkToken()
+            })
+        
+        alertPresenter?.requestShowResultAlert(alertModel: alertModel)
+    }
 }
 extension SplashViewController: ErrorAlertPresenterDelegate {
-    func didPresentAlert(_ alert: UIAlertController?) {
-        guard let alert = alert else { return }
-        present(alert, animated: true, completion: nil)
+    func showAlert(alertController: UIAlertController?) {
+        guard let alertController = alertController else { return }
+        present(alertController, animated: true, completion: nil)
     }
 }

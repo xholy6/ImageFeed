@@ -3,19 +3,21 @@ import Kingfisher
 
 final class ProfileScreenView: UIView {
     
+    weak var viewController: ProfileViewControllerProtocol?
+    
     //MARK: - UI objects
     private lazy var avatarImageView: UIImageView = {
-        
         let imageView = UIImageView()
-        let image = UIImage(named: "Photo")
+        let image = UIImage(named: "ProfileAvatar")
         imageView.image = image
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.backgroundColor = .clear
+        imageView.clipsToBounds = true
         return imageView
         
     }()
     
     private lazy var logoutButton: UIButton = {
-        
         let button = UIButton(type: .custom)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(UIImage(named: "logoutButton"), for: .normal)
@@ -24,7 +26,6 @@ final class ProfileScreenView: UIView {
     }()
     
     private lazy var nameLabel: UILabel = {
-        
         let label = UILabel()
         label.text = "Екатерина Новикова"
         label.textColor = .white
@@ -44,7 +45,6 @@ final class ProfileScreenView: UIView {
     }()
     
     private lazy var descriptionLabel: UILabel = {
-        
         let label = UILabel()
         label.text = "Hello World!"
         label.textColor = .white
@@ -65,7 +65,11 @@ final class ProfileScreenView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
+    convenience init(viewController: ProfileViewControllerProtocol) {
+        self.init()
+        self.viewController = viewController
+    }
     // MARK: - Public methods
     func updateProfile(from profile: Profile?) {
         guard let profile else { return }
@@ -75,14 +79,15 @@ final class ProfileScreenView: UIView {
     }
     
     func updateAvatar(_ url: URL) {
-        avatarImageView.kf.setImage(with: url, placeholder: UIImage(named: "placeholder"), options: nil) { [weak self] result in
+        avatarImageView.kf.setImage(with: url, placeholder: UIImage(named: "ProfileAvatar"), options: nil) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let value):
                 self.avatarImageView.image = value.image
-                self.avatarImageView.layer.cornerRadius = self.avatarImageView.frame.width / 2
+                self.avatarImageView.layer.masksToBounds = true
+                self.avatarImageView.layer.cornerRadius = self.avatarImageView.frame.size.width / 2
             case .failure(_):
-                assertionFailure("something went wrong")
+                self.viewController?.showAlertGetAvatarError()
             }
         }
     }
@@ -97,8 +102,12 @@ final class ProfileScreenView: UIView {
     
     private func constraintsActivate() {
         NSLayoutConstraint.activate([
-            avatarImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 52),
+            
+            avatarImageView.heightAnchor.constraint(equalToConstant: 70),
+            avatarImageView.widthAnchor.constraint(equalToConstant: 70),
+            avatarImageView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 32),
             avatarImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
+     
             
             nameLabel.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: 8),
             nameLabel.leadingAnchor.constraint(equalTo: avatarImageView.leadingAnchor),
@@ -110,14 +119,16 @@ final class ProfileScreenView: UIView {
             descriptionLabel.leadingAnchor.constraint(equalTo: avatarImageView.leadingAnchor),
             
             logoutButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -18),
-            logoutButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 76)
+            logoutButton.centerYAnchor.constraint(equalTo: avatarImageView.centerYAnchor),
+            logoutButton.heightAnchor.constraint(equalToConstant: 44),
+            logoutButton.widthAnchor.constraint(equalToConstant: 44)
             
             
         ])
     }
     
     @objc private func didExitButtonTapped() {
-        
+        viewController?.logoutProfile()
     }
     
 }

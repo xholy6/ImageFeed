@@ -1,17 +1,17 @@
 import UIKit
 
-class SplashViewControllerScreen: UIView {
+final class SplashViewControllerScreen: UIView {
     //MARK: - UI object
- 
+    
     private lazy var logoImageView: UIImageView = {
         let imageView = UIImageView()
-        let image = UIImage(named: "Vector")
+        let image = UIImage(named: "LaunchIcon")
         imageView.image = image
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.backgroundColor = .clear
         return imageView
     }()
-
+    
     // MARK: - Initializers
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -20,21 +20,21 @@ class SplashViewControllerScreen: UIView {
         addSubViews()
         activateConstraints()
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     // MARK: - Private methods
     private func addSubViews() {
         self.addSubview(logoImageView)
     }
-
+    
     private func activateConstraints() {
         NSLayoutConstraint.activate([
             logoImageView.centerXAnchor.constraint(equalTo: centerXAnchor),
             logoImageView.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }
-
+    
 }
