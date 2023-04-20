@@ -50,7 +50,7 @@ final class ProfileImageService {
             path: "/users"
             + "/\(username)",
             httpMethod: "GET",
-            baseURL: Constants.apiBaseURL)
+            baseURL: AuthConfiguration.standart.apiBaseURL)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }

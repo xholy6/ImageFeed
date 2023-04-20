@@ -52,7 +52,7 @@ final class ImageListService {
                         userInfo: ["photos" : self.photos])
                     self.task = nil
                 case .failure(let error):
-                    assertionFailure("\(error)")
+                    print(error)
                 }
                 self.task = nil
             }
@@ -62,13 +62,15 @@ final class ImageListService {
         task.resume()
     }
     
-    
+    func cleanPhotos() {
+        photos = []
+    }
     
     private func ImageListRequest(numberPage: Int, token: String) -> URLRequest {
         var request = URLRequest.makeHTTPRequest(
             path: "/photos" + "?page=\(numberPage)",
             httpMethod: HTTPMethods.get.rawValue,
-            baseURL: Constants.apiBaseURL)
+            baseURL: AuthConfiguration.standart.apiBaseURL)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }
@@ -122,7 +124,7 @@ final class ImageListService {
         var request = URLRequest.makeHTTPRequest(
             path: "/photos" + "/\(id)/like",
             httpMethod: HTTPMethod,
-            baseURL: Constants.apiBaseURL)
+            baseURL: AuthConfiguration.standart.apiBaseURL)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }

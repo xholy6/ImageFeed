@@ -1,9 +1,19 @@
 import UIKit
 import WebKit
 
+protocol WebViewViewProtocol: AnyObject {
+    var presenter: WebViewPresenterProtocol? { get set }
+    func load(request: URLRequest)
+    func setProgressValue(_ newValue: Float)
+    func setProgressHidden(_ isHidden: Bool)
+}
+
 final class WebViewControllerScreen: UIView {
     
     weak var viewController: WebViewViewControllerProtocol?
+    var presenter: WebViewPresenterProtocol?
+    
+    //MARK: - UI object
     private var estimatedProgressObservation: NSKeyValueObservation?
     
     // MARK: - UI object
@@ -11,6 +21,7 @@ final class WebViewControllerScreen: UIView {
         let webView = WKWebView()
         webView.translatesAutoresizingMaskIntoConstraints = false
         webView.backgroundColor = .white
+        webView.accessibilityIdentifier = "UsplashWebView"
         return webView
     }()
     
@@ -32,19 +43,25 @@ final class WebViewControllerScreen: UIView {
     }()
     
     // MARK: - Initializers
-    override init(frame: CGRect) {
+    init(frame: CGRect, viewController: WebViewViewControllerProtocol) {
         super.init(frame: frame)
         self.backgroundColor = .white
         self.translatesAutoresizingMaskIntoConstraints = false
-        addSabViews()
-        activateConstraint()
+        addSubViews()
+        activateConstraints()
+        
+        self.viewController = viewController
+        let authHelper = AuthHelper()
+        self.presenter = WebViewPresenter(helper: authHelper)
+        presenter?.view = self
+        presenter?.viewDidLoad()
         
         estimatedProgressObservation = webView.observe(
             \.estimatedProgress,
              options: [],
              changeHandler: { [weak self] _, _ in
                  guard let self = self else { return }
-                 self.updateProgress()
+                 self.presenter?.didUpdateProgressValue(self.webView.estimatedProgress)
              })
     }
     
@@ -52,24 +69,14 @@ final class WebViewControllerScreen: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    convenience init(viewController: WebViewViewControllerProtocol) {
-        self.init()
-        self.viewController = viewController
-    }
-    
-    func loadWebview(request: URLRequest) {
-        webView.load(request)
-        webView.navigationDelegate = self
-    }
-    
     // MARK: - Private methods
-    private func addSabViews() {
+    private func addSubViews() {
         addSubview(webView)
         addSubview(backButton)
         addSubview(progressView)
     }
     
-    private func activateConstraint() {
+    private func activateConstraints() {
         NSLayoutConstraint.activate([
             webView.topAnchor.constraint(equalTo: topAnchor),
             webView.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -85,11 +92,6 @@ final class WebViewControllerScreen: UIView {
             progressView.trailingAnchor.constraint(equalTo: trailingAnchor),
             progressView.topAnchor.constraint(equalTo: backButton.topAnchor)
         ])
-    }
-    
-    private func updateProgress() {
-        progressView.progress = Float(webView.estimatedProgress)
-        progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
     }
     
     @objc private func didBackButtonTapped() {
@@ -109,16 +111,23 @@ extension WebViewControllerScreen: WKNavigationDelegate {
     }
     
     private func code(from navigationAction: WKNavigationAction) -> String? {
-        if
-            let url = navigationAction.request.url,
-            let urlComponents = URLComponents(string: url.absoluteString),
-            urlComponents.path == "/oauth/authorize/native",
-            let items = urlComponents.queryItems,
-            let codeItem = items.first(where: { $0.name == "code"})
-        {
-            return codeItem.value
-        } else {
-            return nil
-        }
+        guard let url = navigationAction.request.url else { return nil}
+        let code = presenter?.code(from: url)
+        return code
+    }
+}
+
+extension WebViewControllerScreen: WebViewViewProtocol {
+    func load(request: URLRequest) {
+        webView.load(request)
+        webView.navigationDelegate = self
+    }
+    
+    func setProgressValue(_ newValue: Float) {
+        progressView.progress = newValue
+    }
+    
+    func setProgressHidden(_ isHidden: Bool) {
+        progressView.isHidden = isHidden
     }
 }

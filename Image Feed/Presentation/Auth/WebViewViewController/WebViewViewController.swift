@@ -8,63 +8,33 @@ protocol WebViewViewControllerDelegate: AnyObject {
 }
 
 protocol WebViewViewControllerProtocol: AnyObject {
+    var webviewScreen: WebViewViewProtocol? { get set }
     func dismissViewController()
-    func getCode(code: String)
+    func getCode(code: String?)
 }
 
 final class WebViewViewController: UIViewController {
-    
-    //MARK: - IBOutlet
-    @IBOutlet private weak var webView: WKWebView!
-    @IBOutlet private weak var progressView: UIProgressView!
     
     //MARK: - Public properties
     weak var delegate: WebViewViewControllerDelegate?
     
     //MARK: - Private properties
-    private var webviewScreen: WebViewControllerScreen!
+    var webviewScreen: WebViewViewProtocol?
     
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        webviewScreen = WebViewControllerScreen(viewController: self)
-        setScreenViewOnViewController(view: webviewScreen)
+        webviewScreen = WebViewControllerScreen(frame: .zero, viewController: self)
         
-        guard let request = createRequest() else {
-            return assertionFailure("Ошибка запроса для авторизации")
-        }
-        
-        webviewScreen.loadWebview(request: request)
+        guard let screenView = webviewScreen as? UIView else { return }
+        setScreenViewOnViewController(view: screenView)
     }
-    
-    //MARK: - Private methods
-    private func createRequest() -> URLRequest? {
-        var urlComponents = URLComponents(string: Constants.unsplashAuthorizeURLString)!
-        
-        urlComponents.queryItems = [
-            URLQueryItem(name: "client_id", value: Constants.accessKey),
-            URLQueryItem(name: "redirect_uri", value: Constants.redirectURI),
-            URLQueryItem(name: "response_type", value: Constants.responseType),
-            URLQueryItem(name: "scope", value: Constants.accessScope)
-        ]
-        
-        guard let url = urlComponents.url else { return nil }
-        let request = URLRequest(url: url)
-        return request
-    }
-    
-    deinit {
-        print("WebViewViewContoller deinit")
-    }
-}
-
-//MARK: - WKNavigationDelegate
-extension WebViewViewController: WKNavigationDelegate {
-    
 }
 
 extension WebViewViewController: WebViewViewControllerProtocol {
-    func getCode(code: String) {
+    
+    func getCode(code: String?) {
+        guard let code = code else { return }
         delegate?.webViewViewController(self, didAuthenticateWithCode: code)
     }
     

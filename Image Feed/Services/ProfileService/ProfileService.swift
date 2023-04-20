@@ -52,7 +52,7 @@ final class ProfileService {
         var request = URLRequest.makeHTTPRequest(
             path: "/me",
             httpMethod: "GET",
-            baseURL: Constants.apiBaseURL)
+            baseURL: AuthConfiguration.standart.apiBaseURL)
         request.setValue("Bearer \(code)", forHTTPHeaderField: "Authorization")
         return request
     }

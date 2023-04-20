@@ -29,6 +29,7 @@ final class SingleImageViewControllerScreen: UIView {
         let button: UIButton = UIButton(type: .custom)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(UIImage(named: "Backward"), for: .normal)
+        button.accessibilityIdentifier = "Nav back button"
         button.addTarget(self, action: #selector(didBackButtonTapped), for: .touchUpInside)
         return button
     }()

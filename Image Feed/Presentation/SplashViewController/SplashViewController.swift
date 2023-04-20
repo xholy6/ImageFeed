@@ -33,31 +33,26 @@ final class SplashViewController: UIViewController {
     }
     
     //MARK: - Private methods
-    private func presentAuthViewController() {
-        guard let authViewController = getViewController(withIdentifier: authViewControllerIdentifier) as? AuthViewController
-        else { return assertionFailure("Unable to get AuthViewController") }
-        
+    private func getAuthViewController() -> UINavigationController {
+        let authViewController = AuthViewController()
         authViewController.delegate = self
-        authViewController.modalPresentationStyle = .fullScreen
-        present(authViewController, animated: true)
+        let navigationController = UINavigationController(rootViewController: authViewController)
+        navigationController.modalPresentationStyle = .fullScreen
+        return navigationController
     }
+    private func presentAuthViewController() {
+        let viewController = getAuthViewController()
+        present(viewController, animated: true)
+    }
+    
     
     private func switchToTabBarController() {
         guard
-            let window = UIApplication.shared.windows.first,
-            let tabBarController = getViewController(withIdentifier: tabBarIdentifier) as? TabBarController
-        else { return assertionFailure("Invalid configuration") }
-        
-        window.rootViewController = tabBarController
-        window.makeKeyAndVisible()
+            let window = UIApplication.shared.windows.first else { fatalError("Invalid configuration")}
+        let tabBarVC = TabBarController()
+        window.rootViewController = tabBarVC
     }
-    
-    private func getViewController(withIdentifier id: String) -> UIViewController {
-        let storyboard = UIStoryboard(name: "Main", bundle: .main)
-        let viewController = storyboard.instantiateViewController(withIdentifier: id)
-        return viewController
-    }
-    
+
     private func checkToken() {
         if let token = OAuth2TokenStorage.shared.token {
             UIBlockingProgressHUD.show()
