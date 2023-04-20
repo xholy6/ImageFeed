@@ -28,7 +28,7 @@ final class WebViewControllerScreen: UIView {
     private lazy var backButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(UIImage(named: "blackBackward"), for: .normal)
+        button.setImage(UIImage(named: "chevron.backward"), for: .normal)
         button.tintColor = .ypBlack
         button.addTarget(self, action: #selector(didBackButtonTapped), for: .touchUpInside)
         return button
