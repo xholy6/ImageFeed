@@ -13,9 +13,6 @@ final class AuthViewController: UIViewController {
     //MARK: - Public properties
     weak var delegate: AuthViewControllerDelegate?
     
-    //MARK: - @IBOutlet
-    @IBOutlet private var singInButton: UIButton!
-    
     //MARK: - Private properties
     private let segueIdentifier = "ShowWebView"
     private var authScreenView: AuthViewControllerScreen!

@@ -23,6 +23,7 @@ final class AuthViewControllerScreen: UIView {
         button.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .bold)
         button.layer.cornerRadius = 16
         button.layer.masksToBounds = true
+        button.accessibilityIdentifier = "Authenticate"
         button.addTarget(self, action: #selector(didAuthButtonTapped), for: .touchUpInside)
         return button
     }()
